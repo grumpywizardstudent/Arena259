@@ -2,10 +2,16 @@
 <br>
 <br>
 
+# Turn-based vs Tick-based combat (Raylib?)
+> In a turn-based system, creatures can only act on their "turn" and intervals between abilities require an internal counter. 
+
+> In a tick-based system, creatures have a "speed" attribute which is used to count the number of frames or ticks in the simulation. In this system a "fast" creature might attack twice before a "slow" creature has a chance to land a blow. Setting this system up is easy enough with Raylib and a conditional like `if (frame_count % speed == 0) {do something}.
+
+
 # Tournament Organization - 06
 The Arena should have a tournament style where 1v1 fights between each of programs until we have winner. However every program will get to battle each other so that we have a defentive winner on who won the most fights. This'll prevent juggernaut programs being picked off because they were unlucky with their first match.
 
-# Random Events - 05
+# Random Events - 05    
 We can add random events to make certain abilities more or less effective. It doesn't have to be specifically events either, it could be an entire environment, or events tied to an environment that can be activated in a special way. 
 
 # Attribute Points - 04
