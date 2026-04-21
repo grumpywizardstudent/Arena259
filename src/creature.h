@@ -19,6 +19,7 @@ public:
 
     void attack(Creature &other)
     {
+
         other.health -= damage;
         if (other.health < 0)
         {
