@@ -1,15 +1,29 @@
 #include <iostream>
 #include <iomanip>
 #include "arena.h"
+#include "arenarand.h"
 
-void Arena::battle(Creature &a, Creature &b)
+void Arena::battle(Creature &temp1, Creature &temp2)
 {
-    std::cout << a.name << " vs. " << b.name << std::endl;
+
+    Creature* first;
+    Creature* second;
+
+    if (ArenaRand::flipCoin() == 1) {
+        first = &temp1;
+        second = &temp2;
+    } else {
+        first = &temp2;
+        second = &temp1;
+    }
+
+    Creature& a = *first;
+    Creature& b = *second;
 
     if(!Creature::validateBattle(a, b)){
         return;
     }
-
+	    
     std::cout << "=============================\n";
     std::cout << "        ARENA BATTLE        \n";
     std::cout << "=============================\n";
@@ -20,8 +34,8 @@ void Arena::battle(Creature &a, Creature &b)
 
     while (a.isAlive() && b.isAlive())
     {
-        std::cout << "-----------------------------\n";
-	std::cout << "\nTurn " << turn << std::endl;
+        std::cout << "\n-----------------------------\n";
+	std::cout << "Turn " << turn << std::endl;
 	std::cout << "-----------------------------\n";
 
 
@@ -53,5 +67,5 @@ void Arena::battle(Creature &a, Creature &b)
         std::cout << b.name << " defeats " << a.name << "!"<< std::endl;
         std::cout << b.name << " has " << b.health << " HP remaining." << std::endl;
     }
-    std::cout << "\n=============================\n";
+    std::cout << "=============================\n";
 }
