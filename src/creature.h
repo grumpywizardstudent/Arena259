@@ -4,64 +4,65 @@
 #include <string>
 #include <iostream>
 
-const int MIN_HEALTH = 80;
-const int MAX_HEALTH = 120;
+// Added point pool-based attribute assignment system 
+// to enforce balance and enable rock-paper-scissors-style
+// creature design where putting points in one attribute 
+// restricts the points available for other attributes.
+const int POINT_POOL = 30;
+const int BASE_STAT = 5;
+const int SPIRIT_SCALE = 15;  // tunable: higher value = less mitigation overall
 
+class Creature {
+    public:
+        inline static int getCreatureCount() { return creatureCount; };
+// modified damage calc to include stat-based mitigation
+        int takeDamage(int damage);  
 
-class Creature
-{
-public:
-    std::string name;
-    int health;
-    int damage;
+// renamed attack and added target. Now calls takeDamage in the method
+        void mainAttack(Creature &target); 
 
-    Creature(std::string n, int h, int d)
-    {
-        name = n;
-        health = h;
-        damage = d;
-    }
+// getters for private var retrieval
+        const std::string getName() { return name_; };
+        const int getCurrentHP() { return current_hp; }; 
+        const int getAttack() { return attack_; }; 
+        const int getDefense() { return defense_; };
 
-    void attack(Creature &other)
-    {
+// state checks and validation
+        bool isAlive() { return current_hp > 0; }
+        bool validate();
 
-        other.health -= damage;
-        if (other.health < 0)
-        {
-            other.health = 0;
-        }
-    }
+// public constructors/deconstructor with const args and a new default constructor
+        Creature();        
+        Creature(const std::string name, const int hp, const int attack, const int defense, const int spirit_);
+        ~Creature();
+    private:
+// moved vars to private, set to const if immutable
+// and stored the constructor values for validation
+// against the point pool
+        const std::string name_;
+        const int hp_base_;
+        const int attack_base_;
+        const int attack_;
 
-    bool isAlive()
-    {
-        return health > 0;
-    }
+// new defense stat for damage mitigation 
+        const int defense_base_;
+        const int defense_;
+        const int max_hp_;
+// new chaos stat that affects the randomness for attacks and defense
+        const int spirit_base_;
+        const int spirit_;
+// separated HP into max and current for better visibility of 
+// the stat floor/ceiling
+        int current_hp;
 
-    static bool validate(Creature &c){
-        if(c.health < MIN_HEALTH || c.health > MAX_HEALTH){
-            std::cerr << "Error: " << c.name << " has invalid health. Health must be between " << MIN_HEALTH << " and " << MAX_HEALTH << std::endl;
-            return false;
-        }
-        if(c.damage <= 0 || c.damage > 20){
-            std::cerr << "Error: " << c.name << " has invalid damage. Damage must be > 0 or <= 20" << std::endl;
-            return false;
-        }
-        return true;
-        // minimum health to start a battle is 80, otherwise the battle would be predictable
-        // 
-    }
+// the chaos function based on the new spirit attribute.
+// private because it is only ever called from within the class
+        int rollSpirit();
 
-    /*
-    If Creature a or b does not have the valid stats for health or damage
-    It will output an error message and abort
-    */
-    static bool validateBattle(Creature &a, Creature &b){
-        if(!validate(a) || !validate(b)){
-            std::cerr << "The Battle cannot take place as there are invalid stats" << std::endl;
-            return false;
-        }
-        return true;
-    }
+// creature counter
+        inline static int creatureCount = 0;
+
 };
+
 
 #endif

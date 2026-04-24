@@ -1,15 +1,25 @@
 #include <iostream>
-#include <iomanip>
+#include <algorithm>
+#include <sstream>
+#include "utils.h"
 #include "arena.h"
-#include "arenarand.h"
+#include "rng.h"  // renamed arenarand to rng for readability/ease of use
+
+// Removes conditional/duplicate print statements when a winner is decided
+void Arena::printWinner(Creature &winner, Creature &loser) {
+    std::cout << "\n=============================\n";
+    std::cout << winner.getName() << " defeats " << loser.getName() << "!" << std::endl;
+    std::cout << winner.getName() << " has " << winner.getCurrentHP() << " HP remaining." << std::endl;
+    std::cout << "=============================\n";
+}
+
 
 void Arena::battle(Creature &temp1, Creature &temp2)
 {
-
     Creature* first;
     Creature* second;
 
-    if (ArenaRand::flipCoin() == 1) {
+    if (RNG::flipCoin() == 1) {
         first = &temp1;
         second = &temp2;
     } else {
@@ -20,7 +30,7 @@ void Arena::battle(Creature &temp1, Creature &temp2)
     Creature& a = *first;
     Creature& b = *second;
 
-    if(!Creature::validateBattle(a, b)){
+    if(!a.validate() || !b.validate()){
         return;
     }
 	    
@@ -28,44 +38,31 @@ void Arena::battle(Creature &temp1, Creature &temp2)
     std::cout << "        ARENA BATTLE        \n";
     std::cout << "=============================\n";
 
-    std::cout << a.name << " vs " << b.name << std::endl;
+    std::cout << a.getName() << " vs " << b.getName() << std::endl;
 
     int turn = 1;
 
     while (a.isAlive() && b.isAlive())
     {
-        std::cout << "\n-----------------------------\n";
+    std::cout << "\n-----------------------------\n";
 	std::cout << "Turn " << turn << std::endl;
 	std::cout << "-----------------------------\n";
 
 
 	std::cout << std::left
-                  << std::setw(10) << a.name << " HP: " << a.health << "\n"
-                  << std::setw(10) << b.name << " HP: " << b.health << "\n";
-
-
-        std::cout << a.name << " with attack power "<< a.damage << " attacks " << b.name << "!" << std::endl;
-        a.attack(b);
-        std::cout << b.name << " health is: " << b.health << " HP" << std::endl;
-
-
-        std::cout << b.name << " with attack power " << b.damage << " attacks " << a.name << "!" << std::endl;
-        b.attack(a);
-        std::cout << a.name << " health is: " << a.health << " HP" << std::endl;
-
+                //   << std::setw(10) 
+                //   << std::setw(10) 
+                << a.getName() << " HP: " << a.getCurrentHP() << "\n"
+                << b.getName() << " HP: " << b.getCurrentHP() << "\n";
+        
+    // use new mainAttack() method which handles printing info and takeDamage
+        a.mainAttack(b); if (!b.isAlive()) {break;};
+        b.mainAttack(a); if (!a.isAlive()) {break;};
+        
         turn++;
     }
 
-    std::cout << "\n=============================\n";
-    if (a.isAlive())
-    {
-        std::cout << a.name << " defeats " << b.name << "!" << std::endl;
-        std::cout << a.name << " has " << a.health << " HP remaining." << std::endl;
-    }
-    else
-    {
-        std::cout << b.name << " defeats " << a.name << "!"<< std::endl;
-        std::cout << b.name << " has " << b.health << " HP remaining." << std::endl;
-    }
-    std::cout << "=============================\n";
+// more readable winner logic
+    if (a.isAlive())    { printWinner(a, b); }
+    else                { printWinner(b, a); }
 }

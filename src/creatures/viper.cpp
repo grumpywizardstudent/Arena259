@@ -3,7 +3,5 @@
 Creature makeViper()
 {
     std::string n = "Viper";
-    int h = 80;
-    int d = 20;
-    return Creature(n, h, d);
+    return Creature(n, 8, 17, 3, 2);
 }

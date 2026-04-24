@@ -4,6 +4,6 @@
 #include <string>
 using namespace std;
 Creature makeBoogeyman() {
-    Creature boogeyman = Creature("Boogeyman", 120, 15);
+    Creature boogeyman = Creature("Boogeyman", 6, 8, 10, 6);
     return boogeyman;
 }
