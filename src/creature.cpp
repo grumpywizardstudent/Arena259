@@ -21,7 +21,7 @@ Creature::Creature()
 // HP, Attack, and Defense all start with a base of 5 in each attribute to 
 // prevent 0 values. Spirit has base 1. Assigned values are added during 
 // instantiation.
-Creature::Creature(const std::string name, const int hp, const int attack, const int defense, const int spirit)
+Creature::Creature(std::string name, int hp, int attack, int defense, int spirit)
     : name_(name)
     , hp_base_(hp)
     , max_hp_((BASE_STAT + hp_base_) * 4)

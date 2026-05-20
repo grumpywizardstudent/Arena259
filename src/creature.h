@@ -22,37 +22,29 @@ class Creature {
         void mainAttack(Creature &target); 
 
 // getters for private var retrieval
-        const std::string getName() { return name_; };
-        const int getCurrentHP() { return current_hp; }; 
-        const int getAttack() { return attack_; }; 
-        const int getDefense() { return defense_; };
+        std::string getName() const  { return name_; };
+        int getCurrentHP() const  { return current_hp; }; 
+        int getAttack() const  { return attack_; }; 
+        int getDefense() const  { return defense_; };
 
 // state checks and validation
         bool isAlive() { return current_hp > 0; }
         bool validate();
 
-// public constructors/deconstructor with const args and a new default constructor
+// public constructors
         Creature();        
-        Creature(const std::string name, const int hp, const int attack, const int defense, const int spirit_);
+        Creature(std::string name, int hp, int attack, int defense, int spirit_);
         ~Creature();
     private:
-// moved vars to private, set to const if immutable
-// and stored the constructor values for validation
-// against the point pool
         const std::string name_;
         const int hp_base_;
         const int attack_base_;
         const int attack_;
-
-// new defense stat for damage mitigation 
         const int defense_base_;
         const int defense_;
         const int max_hp_;
-// new chaos stat that affects the randomness for attacks and defense
         const int spirit_base_;
         const int spirit_;
-// separated HP into max and current for better visibility of 
-// the stat floor/ceiling
         int current_hp;
 
 // the chaos function based on the new spirit attribute.
