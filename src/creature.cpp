@@ -37,6 +37,10 @@ Creature::Creature(std::string name, int hp, int attack, int defense, int spirit
 // Class deconstructor
 Creature::~Creature() {}
 
+
+Creature& Creature::chooseTarget(std::vector<Creature*> creatures) {
+    
+}
 // Updated attack method adds or subtracts damage from base attack
 // based on a symmetrical window centered on zero based on a chaos roll
 // derived from spirit stat. 

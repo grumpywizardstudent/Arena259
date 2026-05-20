@@ -24,15 +24,15 @@ int main()
 
         creatures.push_back(&Grunt);
         creatures.push_back(&Boogeyman);
-        creatures.push_back(&ClawDragon);
-        creatures.push_back(&GiantLeech);
-        creatures.push_back(&Segoblin);
-        creatures.push_back(&SumoSally);
-        creatures.push_back(&Viper);
+        // creatures.push_back(&ClawDragon);
+        // creatures.push_back(&GiantLeech);
+        // creatures.push_back(&Segoblin);
+        // creatures.push_back(&SumoSally);
+        // creatures.push_back(&Viper);
 
     std::cout << "Total Creatures created: " << Creature::getCreatureCount() << std::endl;
 
-    Arena::battle(Grunt, Viper);
+    Arena battle(creatures);
   
 
     return 0;

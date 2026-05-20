@@ -19,7 +19,8 @@ class Creature {
         int takeDamage(int damage);  
 
 // renamed attack and added target. Now calls takeDamage in the method
-        void mainAttack(Creature &target); 
+        void mainAttack(Creature &target);
+        virtual Creature& chooseTarget(std::vector<Creature*> creatures);
 
 // getters for private var retrieval
         std::string getName() const  { return name_; };
