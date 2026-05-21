@@ -8,6 +8,7 @@ class Arena
 {
 public:
     Arena(std::vector<Creature*> creatures) : creatures(creatures) {};
+    void battle();
     void printBegin();
     void printTurn(int turn);
     void printWinner(Creature& winner);
@@ -15,7 +16,8 @@ public:
 
 private:
     bool hasWinner = false;
-    std::vector<Creature*> still_alive;
+    bool checkPulse(Creature* c);
+    std::vector<Creature*> defeated;
     std::vector<Creature*> creatures;
 };
 

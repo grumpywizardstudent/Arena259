@@ -16,11 +16,11 @@ enum class Color {
 };
 
 // Helper to output the ANSI escape sequence
-std::ostream& operator<<(std::ostream& os, Color color) {
+inline std::ostream& operator<<(std::ostream& os, Color color) {
     return os << "\033[" << static_cast<int>(color) << "m";
 }
 
-std::string colorMe(std::string text, Color color) {
+inline std::string colorMe(std::string text, Color color) {
     return "\033[" + std::to_string(static_cast<int>(color)) + "m" + text + "\033[0m";
 }
 
