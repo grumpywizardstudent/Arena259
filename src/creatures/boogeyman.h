@@ -2,10 +2,9 @@
 #define BOOGEYMAN_H
 #include "../creature.h"
 
-// declare creature function
-
-Creature makeBoogeyman();
-
-
+class Boogeyman : public Creature {
+public:
+    Boogeyman();
+};
 
 #endif

@@ -1,6 +1,5 @@
 #include "viper.h"
 
-Creature makeViper()
-{
-    return Creature("Viper", 8, 17, 3, 2);
-}
+Viper::Viper()
+    : Creature("Viper", 5, 17, 3, 5, MODE::HIGH_ATTACK)
+{}

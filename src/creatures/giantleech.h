@@ -3,7 +3,9 @@
 
 #include "../creature.h"
 
-
-Creature makeGiantleech();
+class GiantLeech : public Creature {
+public:
+    GiantLeech();
+};
 
 #endif

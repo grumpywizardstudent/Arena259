@@ -1,8 +1,6 @@
-
 // Sean's and Ezra's creature
-
 #include "segoblin.h"
 
-Creature makeSEGoblin() {
-	return Creature("Goblin", 8, 10, 6, 6);
-}
+SEGoblin::SEGoblin()
+    : Creature("Goblin", 3, 13, 4, 10, MODE::LOW_MAX_HP)
+{}

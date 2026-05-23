@@ -3,7 +3,9 @@
 
 #include <string>
 #include <iostream>
+#include <map>
 #include <vector>
+#include "damage.h"
 
 enum class MODE {
     LOW_CUR_HP = 1,
@@ -18,10 +20,6 @@ enum class MODE {
     HIGH_SPIRIT = 10
 };
 
-// Added point pool-based attribute assignment system 
-// to enforce balance and enable rock-paper-scissors-style
-// creature design where putting points in one attribute 
-// restricts the points available for other attributes.
 const int POINT_POOL = 30;
 const int BASE_STAT = 5;
 const int SPIRIT_SCALE = 15;  // tunable: higher value = less mitigation overall
@@ -29,26 +27,25 @@ const int SPIRIT_SCALE = 15;  // tunable: higher value = less mitigation overall
 class Creature {
 public:
     inline static int getCreatureCount() { return creatureCount; };
-// modified damage calc to include stat-based mitigation
-    int takeDamage(int damage);  
-
-// renamed attack and added target. Now calls takeDamage in the method
-    void mainAttack(Creature &target);
+    int takeDamage(int raw_damage, Creature* source);
+    void applyDamage(const Damage& d);
+    void processDamage(int current_turn);
+    virtual void mainAttack(Creature& target);
     virtual Creature& chooseTarget(std::vector<Creature*> creatures, MODE m);
 
-// getters for private var retrieval
     std::string getName() const  { return name_; };
-    int getCurrentHP() const  { return current_hp; }; 
-    int getAttack() const  { return attack_; }; 
-    int getDefense() const  { return defense_; };
+    int getCurrentHP() const  { return current_hp; };
+    int getMaxHP()     const  { return max_hp_; };
+    int getAttack()    const  { return attack_; };
+    int getDefense()   const  { return defense_; };
+    int getSpirit()    const  { return spirit_; };
+    MODE getMode()     const  { return mode_; };
 
-// state checks and validation
     bool isAlive() { return current_hp > 0; }
     bool validate();
 
-// public constructors
-    Creature();        
-    Creature(std::string name, int hp, int attack, int defense, int spirit_);
+    Creature();
+    Creature(std::string name, int hp, int attack, int defense, int spirit, MODE mode = MODE::LOW_CUR_HP);
     virtual ~Creature();
 private:
     const std::string name_;
@@ -57,16 +54,15 @@ private:
     const int attack_;
     const int defense_base_;
     const int defense_;
-    const int max_hp_;
     const int spirit_base_;
     const int spirit_;
+    const int max_hp_;    // depends on spirit_, must be declared after it
     int current_hp;
+    MODE mode_;
+    std::vector<Damage> active_damage_;
+    std::map<DamageType, float> resistances_; // 1.0=normal, 0.5=resistant, 2.0=vulnerable
 
-// the chaos function based on the new spirit attribute.
-// private because it is only ever called from within the class
     int rollSpirit();
-
-// creature counter
     inline static int creatureCount = 0;
 
 };

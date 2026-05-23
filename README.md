@@ -10,6 +10,20 @@ ____
 If we say each class can have n attribute points, each classmate can distribute the points into their class accross all the stats.
 With some tinkering, this could be a good step for ensuring balance.
 
+Each creature's four base stats — HP, Attack, Defense, and Spirit — must sum to exactly `POINT_POOL` (30). Creatures that fail `validate()` are disqualified from battle. HP, Attack, and Defense each have a hidden floor of `BASE_STAT` (5) added at construction so no stat can reach zero; Spirit has a floor of 1.
+
+This creates a rock-paper-scissors design space: a creature that dumps points into HP trades away Attack or Spirit, and so on.
+
+## Damage Formula
+
+`mainAttack` rolls a symmetrical variance window `[-rollSpirit(), +rollSpirit()]` around the attacker's base Attack stat. The result is floored at 1.
+
+`takeDamage` applies diminishing-returns mitigation: `rate = (defense * 256) / (defense + chaos * SPIRIT_SCALE)`, where `chaos` is drawn from the **attacker's** Spirit (not the defender's). This means high-Spirit attackers deal more variable damage rather than high-Spirit defenders taking more damage. `SPIRIT_SCALE` (default 15) is a tunable constant — raising it reduces mitigation overall.
+
+## Default / Test Creature
+
+`Creature()` (no-arg constructor) builds **Grunt**: 10 HP / 10 Attack / 6 Defense / 4 Spirit. Grunt is intentionally middle-of-the-road and is used for quick testing without a full roster.
+
 # Buff Debuff Class
 add a buff/debuff class that stores any modifiers that will be added to a creature.
 

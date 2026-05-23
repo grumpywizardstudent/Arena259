@@ -3,5 +3,9 @@
 
 #include "../creature.h"
 
-Creature makeViper();
+class Viper : public Creature {
+public:
+    Viper();
+};
+
 #endif

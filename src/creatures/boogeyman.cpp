@@ -1,6 +1,6 @@
 // Miriam and PJ
 #include "boogeyman.h"
 
-Creature makeBoogeyman() {
-    return Creature("Boogeyman", 6, 8, 10, 6);
-}
+Boogeyman::Boogeyman()
+    : Creature("Boogeyman", 6, 8, 10, 6, MODE::HIGH_CUR_HP)
+{}

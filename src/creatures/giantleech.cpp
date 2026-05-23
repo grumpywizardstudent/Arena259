@@ -1,8 +1,6 @@
+// Oz and Eldon
 #include "giantleech.h"
 
-// Oz and Eldon
-
-Creature makeGiantleech() {
-    Creature leech = Creature("Giant Leech", 10, 11, 6, 3);
-    return leech;
-}
+GiantLeech::GiantLeech()
+    : Creature("Giant Leech", 14, 9, 5, 2, MODE::HIGH_ATTACK)
+{}

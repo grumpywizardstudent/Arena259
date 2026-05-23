@@ -10,25 +10,23 @@
 
 int main()
 {
-    Creature Grunt;
-    Creature Boogeyman(makeBoogeyman());
-    Creature ClawDragon(makeClawdragon());
-    Creature GiantLeech(makeGiantleech());
-    Creature Segoblin(makeSEGoblin());
-    Creature SumoSally(make_sumo_sally());
-    Creature Viper(makeViper());
-    
+    Creature grunt;
+    Boogeyman boogeyman;
+    Clawdragon clawdragon;
+    GiantLeech giantleech;
+    SEGoblin segoblin;
+    SumoSally sumoSally;
+    Viper viper;
 
-// we'll need this sooner or later!
     std::vector<Creature*> creatures;
 
-        creatures.push_back(&Grunt);
-        creatures.push_back(&Boogeyman);
-        creatures.push_back(&ClawDragon);
-        creatures.push_back(&GiantLeech);
-        creatures.push_back(&Segoblin);
-        creatures.push_back(&SumoSally);
-        creatures.push_back(&Viper);
+        // creatures.push_back(&grunt);
+        // creatures.push_back(&boogeyman);
+        creatures.push_back(&clawdragon);
+        creatures.push_back(&giantleech);
+        creatures.push_back(&segoblin);
+        creatures.push_back(&sumoSally);
+        creatures.push_back(&viper);
 
     std::cout << "Total Creatures created: " << Creature::getCreatureCount() << std::endl;
 
