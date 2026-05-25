@@ -4,9 +4,8 @@
 #include <vector>
 #include "utils.h"
 #include "arena.h"
-#include "rng.h"  // renamed arenarand to rng for readability/ease of use
+#include "rng.h"
 
-// Removes conditional/duplicate print statements when a winner is decided
 void Arena::printWinner(Creature& winner) {
     std::cout << Color::YELLOW << "\n=============================\n" << Color::RESET;
     std::cout << colorMe(winner.getName(), Color::GREEN) << " wins!\n";
@@ -32,18 +31,24 @@ void Arena::printTurn(int turn) {
     std::cout << "-----------------------------\n" << Color::RESET;
 }
 
-bool Arena::takeTurn(Creature& acting, Creature& target) {
-    acting.mainAttack(target);
-    return target.isAlive();
+void Arena::takeTurn(Creature& acting, Creature& target) {
+    auto d = acting.mainAttack();
+    std::cout << colorMe(acting.getName(), Color::CYAN) << " attacks "
+              << colorMe(target.getName(), Color::CYAN)
+              << " for " << colorMe(std::to_string(d->getAmount()), Color::RED) << "!\n";
+    target.takeDamage(std::move(d));
 }
 
 bool Arena::checkPulse(Creature* c) {
-    if (c == nullptr) { return false; };
+    if (c == nullptr) { return false; }
     return c->isAlive();
 }
 
 void Arena::battle()
 {
+    for (Creature* c : creatures)
+        c->validate();
+
     int turn = 1;
     std::vector<Creature*> still_alive;
 
@@ -55,15 +60,18 @@ void Arena::battle()
         for (Creature* c : creatures)
         {
             if (!checkPulse(c)) continue;
-            std::cout << "\n>> " << colorMe(c->getName() + "'s", Color::CYAN) << " turn:\n";
             Creature& target = c->chooseTarget(creatures, c->getMode());
-            bool survived = takeTurn(*c, target);
-            if (!survived) {
-                std::cout << colorMe("** " + target.getName() + " has been defeated! **", Color::RED) << "\n";
-            }
+            if (&target == c) continue;  // no valid targets — last creature standing
+            std::cout << "\n>> " << colorMe(c->getName() + "'s", Color::CYAN) << " turn:\n";
+            takeTurn(*c, target);
         }
+
         for (Creature* c : creatures)
             if (c->isAlive()) c->processDamage(turn);
+
+        for (Creature* c : creatures)
+            if (!c->isAlive())
+                std::cout << colorMe("** " + c->getName() + " has been defeated! **", Color::RED) << "\n";
 
         turn++;
 

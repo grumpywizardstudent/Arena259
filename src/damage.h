@@ -10,36 +10,67 @@ enum class DamageType {
     ELEMENTAL
 };
 
-enum class DamageMode {
-    INSTANT,
-    DOT,    // deal amount_ per tick for duration_ ticks
-    STACK   // accumulate amount_ each tick, deliver total when duration_ expires
-};
-
 class Damage {
 public:
-    // amount is int for now; will accept Attribute once that type is defined
-    Damage(int amount, DamageType type, DamageMode mode, int duration, int turn_received, Creature* source);
+    Damage(int amount, DamageType type, Creature* source)
+        : amount_(amount), type_(type), source_(source) {}
+    virtual ~Damage() = default;
 
-    int        getAmount()       const { return amount_; }
-    DamageType getType()         const { return type_; }
-    DamageMode getMode()         const { return mode_; }
-    int        getDuration()     const { return duration_; }
-    int        getTurnReceived() const { return turn_received_; }
-    Creature*  getSource()       const { return source_; }
+    int        getAmount() const { return amount_; }
+    DamageType getType()   const { return type_; }
+    Creature*  getSource() const { return source_; }  // may be null — always null-check before deref
 
-    bool isExpired()   const;  // true when duration_ <= 0
-    void tick();               // decrement duration_; STACK also accumulates amount_ into accumulated_
-    int  deliverable() const;  // hp to subtract this tick: DOT=amount_, STACK=accumulated_ on expiry
+    virtual bool isExpired()   const = 0;
+    virtual void tick()              = 0;
+    virtual int  deliverable() const = 0;
 
-private:
+protected:
     int        amount_;
     DamageType type_;
-    DamageMode mode_;
-    int        duration_;
-    int        turn_received_;
-    Creature*  source_;      // raw pointer — source may die before DoT/STACK expires
-    int        accumulated_; // STACK mode accumulator
+    Creature*  source_;
+};
+
+// Delivers amount_ once on the first processDamage tick, then expires.
+class InstantDamage : public Damage {
+public:
+    InstantDamage(int amount, DamageType type, Creature* source)
+        : Damage(amount, type, source) {}
+
+    bool isExpired()   const override { return ticked_; }
+    void tick()              override { ticked_ = true; }
+    int  deliverable() const override { return ticked_ ? amount_ : 0; }
+
+private:
+    bool ticked_ = false;
+};
+
+// Delivers amount_ each tick for duration_ ticks.
+class DotDamage : public Damage {
+public:
+    DotDamage(int amount, DamageType type, int duration, Creature* source)
+        : Damage(amount, type, source), duration_(duration) {}
+
+    bool isExpired()   const override { return duration_ <= 0; }
+    void tick()              override { duration_--; }
+    int  deliverable() const override { return amount_; }
+
+private:
+    int duration_;
+};
+
+// Accumulates amount_ each tick; delivers the total only when duration_ expires.
+class StackDamage : public Damage {
+public:
+    StackDamage(int amount, DamageType type, int duration, Creature* source)
+        : Damage(amount, type, source), duration_(duration), accumulated_(0) {}
+
+    bool isExpired()   const override { return duration_ <= 0; }
+    void tick()              override { accumulated_ += amount_; duration_--; }
+    int  deliverable() const override { return isExpired() ? accumulated_ : 0; }
+
+private:
+    int duration_;
+    int accumulated_;
 };
 
 #endif

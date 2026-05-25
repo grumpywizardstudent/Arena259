@@ -1,14 +1,26 @@
 #ifndef ATTRIBUTE_H
 #define ATTRIBUTE_H
 
-// Placeholder — will be fully defined in the Attribute refactor.
-// Creature stats (HP, Attack, Defense, Spirit) will become Attribute instances.
+#include "constants.h"
+
+enum class AttributeType { HP, ATTACK, DEFENSE, SPIRIT };
+
 class Attribute {
 public:
-    explicit Attribute(int value) : value_(value) {}
-    int getValue() const { return value_; }
+    Attribute(AttributeType type, int raw)
+        : type_(type), base_(raw) {}
+
+    AttributeType getType()  const { return type_; }
+    int           getBase()  const { return base_; }
+    int           getValue() const { return base_ + floorFor(type_); }
+
 private:
-    int value_;
+    AttributeType type_;
+    int           base_;
+
+    static int floorFor(AttributeType t) {
+        return (t == AttributeType::SPIRIT) ? 1 : BASE_STAT;
+    }
 };
 
 #endif

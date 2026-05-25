@@ -12,12 +12,11 @@ public:
     void printBegin();
     void printTurn(int turn);
     void printWinner(Creature& winner);
-    bool takeTurn(Creature& acting, Creature& target); // return target->isAlive()
+    void takeTurn(Creature& acting, Creature& target);
 
 private:
     bool hasWinner = false;
     bool checkPulse(Creature* c);
-    std::vector<Creature*> defeated;
     std::vector<Creature*> creatures;
 };
 
