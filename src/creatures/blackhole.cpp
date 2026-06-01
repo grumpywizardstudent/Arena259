@@ -8,7 +8,7 @@ BlackHole::BlackHole(): Creature("Black Hole", 120, 1)
     lastObservedHealth = getStartHealth();
 }
 
-void BlackHole::attack(Creature& other) {
+void BlackHole::attack(Creature& other, int modifier) {
     // Track damage taken
     int current = getHealth();
     if (current < lastObservedHealth) {
@@ -22,8 +22,8 @@ void BlackHole::attack(Creature& other) {
         return;
     }
 
-    other.takeDamage(getDamage());
-    incDamageDealt(getDamage());
+    other.takeDamage(getDamage() + modifier);
+    incDamageDealt(getDamage() + modifier);
     if (specialActivated && !specialUsed)
         std::cout << other.getName() << " has " << (5 - hitsTaken) << " hits left before it is consumed." << std::endl;
 }

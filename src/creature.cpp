@@ -95,6 +95,10 @@ void Creature::setHealth(int newHealth) {
 	}
 }
 
+void Creature::setDefense(int newDefense) {
+	defense = newDefense;
+}
+
 void Creature::setDamage(int newDamage) {
 	damage = newDamage; // update damage
 	if (getDamage() < 0) { // don't allow damage to be negative
@@ -123,9 +127,14 @@ void Creature::takeDamage(int amount) {
 }
 
 // Methods interacting with other creatures
-void Creature::attack(Creature& target) {
-	target.takeDamage(damage);
-	incDamageDealt(damage);
+void Creature::attack(Creature& target, int modifier) {
+	int modified_damage = damage + modifier;
+	target.takeDamage(modified_damage);
+	incDamageDealt(modified_damage);
+	std::cout << colorMe(name, Color::CYAN) << " attacks "
+                  << colorMe(target.getName(), Color::RED) << " for "
+                  << colorMe(std::to_string(modified_damage), Color::YELLOW) << " damage! "
+                  << colorMe("(" + std::to_string(target.getHealth()) + " HP remaining)", Color::WHITE) << "\n";
 }
 
 void Creature::specialMove(Creature& target){

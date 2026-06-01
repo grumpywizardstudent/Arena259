@@ -8,7 +8,7 @@ class BlackHole : public Creature
 public:
     BlackHole();
 
-    void attack(Creature& target) override;
+    void attack(Creature& target, int modifier=0) override;
     void specialMove(Creature& other) override;
 
 private:

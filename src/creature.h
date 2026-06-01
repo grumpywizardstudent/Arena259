@@ -66,13 +66,14 @@ public:
 	// Setters
 	void setName(std::string); 						// set name
 	void setHealth(int); 							// set health
-	void setDamage(int); 							// set damage
+	void setDamage(int); 		                    // set damage
+	void setDefense(int);							// set defense
 	void heal(int); 								// increase health
 	void incDamage(int); 							// increase damage
 	void incDamageDealt(int); 						// increase damage dealt stat
 
 	// Damage other creatures
-	virtual void attack(Creature& target); 			// decreases health of target 
+	virtual void attack(Creature& target, int modifier=0); 			// decreases health of target 
 	virtual void specialMove(Creature& target);
 	void takeDamage(int amount); 					// decrease this creature's health by amount - defense
 	Creature& chooseTarget(const Creatures& creatures, MODE m = MODE::RANDOM);

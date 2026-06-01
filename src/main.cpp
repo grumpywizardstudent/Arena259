@@ -48,7 +48,7 @@ int main()
 while(true) {
 
     std::cout << Color::YELLOW << "\n\n\n=============================\n";
-    std::cout << "        WELCOME TO THE ARENA!        \n";
+    std::cout << "   WELCOME TO THE ARENA!        \n";
     std::cout << "=============================\n" << Color::RESET;
 
     // --- Game mode selection ---

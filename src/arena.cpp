@@ -27,21 +27,40 @@ void Arena::printBegin() {
 
 void Arena::printTurn(int turn) {
     std::cout << Color::BLUE << "\n-----------------------------\n";
-    std::cout << "Turn " << turn << "\n";
+    std::cout << "Turn " << turn << " | " << getModString() << "\n";
     std::cout << "-----------------------------\n" << Color::RESET;
 }
 
 bool Arena::takeTurn(Creature& acting, Creature& target) {
-    if (RNG::randomValue(1, 100) <= acting.specialChance()) {
-        acting.specialMove(target);
-        std::cout << acting.getName() << " uses SPECIAL MOVE!\n";
-    }
-    else {
-        acting.attack(target);
-        std::cout << colorMe(acting.getName(), Color::CYAN) << " attacks "
-                  << colorMe(target.getName(), Color::RED) << " for "
-                  << colorMe(std::to_string(acting.getDamage()), Color::YELLOW) << " damage! "
-                  << colorMe("(" + std::to_string(target.getHealth()) + " HP remaining)", Color::WHITE) << "\n";
+    switch (mod) {
+        case Modifier::NO_SPECIAL:
+            std::cout << "Special Moves blocked by Arena!" << std::endl;
+            if (RNG::randomValue(1, 100) <= acting.specialChance()) 
+                { std::cout << acting.getName() + "can't use Special Move!" << std::endl; }
+            else { acting.attack(target); }
+            break;
+        case Modifier::DOUBLE_SPECIAL:
+            std::cout << "Chance for Special is DOUBLED!" << std::endl;
+            if (RNG::randomValue(1, 100) <= acting.specialChance()) { acting.specialMove(target); }
+            if (RNG::randomValue(1, 100) <= acting.specialChance()) { acting.specialMove(target); }
+            else { acting.attack(target); }
+            break;
+        case Modifier::ATTACK_BUFF:
+            if (RNG::randomValue(1, 100) <= acting.specialChance()) { acting.specialMove(target); }
+            else { acting.attack(target, 10); }
+            break;
+        case Modifier::DEFENSE_BUFF: {
+            int original_value = target.getDefense();
+            target.setDefense(original_value + 5);
+            if (RNG::randomValue(1, 100) <= acting.specialChance()) { acting.specialMove(target); }
+            else { acting.attack(target); }
+            target.setDefense(original_value);
+            break;
+        }
+        default:
+            if (RNG::randomValue(1, 100) <= acting.specialChance()) { acting.specialMove(target); }
+            else { acting.attack(target); }
+            break;
     }
     return target.isAlive();
 }
@@ -58,6 +77,7 @@ void Arena::fightPair(Creature& a, Creature& b) {
     hasWinner = false;
     int turn = 1;
     while (!hasWinner) {
+        rotateMod();
         printTurn(turn);
         if (!takeTurn(*first, *second)) { hasWinner = true; break; }
         if (!takeTurn(*second, *first)) { hasWinner = true; break; }
@@ -87,7 +107,8 @@ void Arena::battleRoyale()
     hasWinner = false;
     
     while (!hasWinner)
-    {
+    {   
+        rotateMod();
         printTurn(turn);
         for (auto& c : creatures)
         {

@@ -9,7 +9,7 @@ void GrumpyWizard::specialMove(Creature& target) {
 }
 
 
-void GrumpyWizard::attack(Creature& target) { 
+void GrumpyWizard::attack(Creature& target, int modifier) {
             std::cout << "The Grumpy Wizard casts Disintegrate on " << target.getName() << std::endl;
             std::cout << target.getName() << " turns to dust!" << std::endl;
             target.takeDamage(5000);
