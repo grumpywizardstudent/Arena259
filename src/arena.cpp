@@ -116,7 +116,7 @@ void Arena::battleRoyale()
         {
             if (!c->isAlive()) continue;
             std::cout << "\n>> " << colorMe(c->getName() + "'s", Color::CYAN) << " turn:\n";
-            Creature& target = c->chooseTarget(creatures);
+            Creature& target = c->chooseTarget(creatures, c->mode);
             bool survived = takeTurn(*c, target);
             if (!survived) {
                 std::cout << colorMe("** " + target.getName() + " has been defeated! **", Color::RED) << "\n";

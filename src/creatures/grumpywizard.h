@@ -9,4 +9,5 @@ class GrumpyWizard : public Creature {
         void specialMove(Creature& target) override;
         void attack(Creature& target) override;
 
+        MODE mode = MODE::HIGH_MAX_HP;
 };

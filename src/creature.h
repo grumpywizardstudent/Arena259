@@ -22,8 +22,6 @@ enum class MODE {
     HIGH_ATTACK = 6,
     LOW_DEFENSE = 7,
     HIGH_DEFENSE = 8,
-    LOW_SPIRIT = 9,
-    HIGH_SPIRIT = 10
 };
 
 
@@ -51,6 +49,8 @@ public:
 	Creature(std::string name, int health, int damage, int defense);
 
 	virtual ~Creature();
+
+	MODE mode = MODE::RANDOM;
 
 	// Getters
 	std::string getName() const; 					// returns the name variable
