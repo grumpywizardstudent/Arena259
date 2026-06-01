@@ -11,6 +11,8 @@ public:
 	Jeff();
 
 	void specialMove(Creature& other) override;
+private:
+	int timesUsed = 0;
 };
 
 #endif

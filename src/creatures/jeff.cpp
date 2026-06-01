@@ -4,10 +4,9 @@
 // header files
 #include "jeff.h"
 
-int timesUsed = 0;
 
 // Constructor
-Jeff::Jeff(): Creature("Jeff", 120, 5){}
+Jeff::Jeff(): Creature("Jeff", 120, 5, 10){}
 void Jeff::specialMove(Creature& other){
 	if(timesUsed == 0){
 		timesUsed++;
