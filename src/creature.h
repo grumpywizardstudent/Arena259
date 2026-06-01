@@ -73,7 +73,7 @@ public:
 	void incDamageDealt(int); 						// increase damage dealt stat
 
 	// Damage other creatures
-	virtual void attack(Creature& target, int modifier=0); 			// decreases health of target 
+	virtual void attack(Creature& target); 			// decreases health of target 
 	virtual void specialMove(Creature& target);
 	void takeDamage(int amount); 					// decrease this creature's health by amount - defense
 	Creature& chooseTarget(const Creatures& creatures, MODE m = MODE::RANDOM);
@@ -81,7 +81,7 @@ public:
 	constexpr int specialChance() {
 		float numerator = damage - MIN_DAMAGE;
 		float denominator = MAX_DAMAGE - MIN_DAMAGE;
-		int coeff = 25 - 10;
+		int coeff = 50 - 10;
 		return 10 + (int)(numerator / denominator * coeff);
 	};
 

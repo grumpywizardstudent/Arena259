@@ -3,11 +3,10 @@
 AbominableMudman::AbominableMudman()
     : Creature("Abominable Mudman", 120, 9){}
 
-void AbominableMudman::attack(Creature& target, int modifier) {
+void AbominableMudman::attack(Creature& target) {
     atk_count++;
-    int dmg = this->getDamage() + modifier;
-    target.takeDamage(dmg); //normal attack phase
-	incDamageDealt(dmg);
+    target.takeDamage(this->getDamage());
+	incDamageDealt(this->getDamage());
 
     if (dealPercentDmg()){
         int health_portion = (target.getHealth()/10)+1; //calculate portion of health to remove +1 to avoid trunkation after division

@@ -78,11 +78,23 @@ while(true) {
     if (mode == 1) {
         std::cout << "\nPick 2 creatures for battle.\n";
     } else {
-        std::cout << "\nEnter creature numbers one at a time. Enter 0 when done (minimum 2).\n";
+        std::cout << "\nAdd all creatures? (y/n): ";
+        char allChoice;
+        std::cin >> allChoice;
+        if (allChoice == 'y' || allChoice == 'Y') {
+            for (int i = 1; i <= (int)CREATURE_NAMES.size(); ++i) {
+                picked.insert(i);
+                creatures.push_back(makeCreature(i));
+            }
+            std::cout << "All " << creatures.size() << " creatures added.\n";
+        } else {
+            std::cout << "Enter creature numbers one at a time. Enter 0 when done (minimum 2).\n";
+        }
     }
 
     while (true) {
         if (mode == 1 && (int)creatures.size() == 2) break;
+        if (mode != 1 && (int)creatures.size() == (int)CREATURE_NAMES.size()) break;
 
         if (mode != 1) {
             std::cout << "Add creature (0 to finish): ";

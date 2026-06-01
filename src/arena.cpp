@@ -34,21 +34,23 @@ void Arena::printTurn(int turn) {
 bool Arena::takeTurn(Creature& acting, Creature& target) {
     switch (mod) {
         case Modifier::NO_SPECIAL:
-            std::cout << "Special Moves blocked by Arena!" << std::endl;
             if (RNG::randomValue(1, 100) <= acting.specialChance()) 
                 { std::cout << acting.getName() + "can't use Special Move!" << std::endl; }
             else { acting.attack(target); }
             break;
         case Modifier::DOUBLE_SPECIAL:
-            std::cout << "Chance for Special is DOUBLED!" << std::endl;
             if (RNG::randomValue(1, 100) <= acting.specialChance()) { acting.specialMove(target); }
             if (RNG::randomValue(1, 100) <= acting.specialChance()) { acting.specialMove(target); }
             else { acting.attack(target); }
             break;
-        case Modifier::ATTACK_BUFF:
+        case Modifier::ATTACK_BUFF: {
+            int original_value = acting.getDamage();
+            acting.setDamage(original_value + 10);
             if (RNG::randomValue(1, 100) <= acting.specialChance()) { acting.specialMove(target); }
-            else { acting.attack(target, 10); }
+            else { acting.attack(target); }
+            acting.setDamage(original_value);
             break;
+        }
         case Modifier::DEFENSE_BUFF: {
             int original_value = target.getDefense();
             target.setDefense(original_value + 5);
