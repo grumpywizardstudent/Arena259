@@ -24,7 +24,7 @@ Creature::Creature(std::string name, int health, int damage)
 	, startHealth(health)
 	, damage(damage)
 	, startDamage(damage)
-	, defense(0)
+	, defense(8)
 	{ creatureCount++;
 	std::cout << "[constructor] Creature base constructed: " << name << std::endl;  }
 
@@ -142,6 +142,9 @@ void Creature::specialMove(Creature& target){
 
 Creature& Creature::chooseTarget(const Creatures& creatures, MODE m) {
     std::vector<Creature*> targets;
+	for (auto* target : targets) {
+            if (target->getName() == "The Grumpy Wizard") { return *target; }
+	}
     for (const auto& c : creatures) {
         if (c.get() != this && c->isAlive()) targets.push_back(c.get());
     }

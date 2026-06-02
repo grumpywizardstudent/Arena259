@@ -22,6 +22,7 @@ enum class MODE {
     HIGH_ATTACK = 6,
     LOW_DEFENSE = 7,
     HIGH_DEFENSE = 8,
+	GRUMPY_WIZARD = 9,
 };
 
 
@@ -76,7 +77,7 @@ public:
 	virtual void attack(Creature& target); 			// decreases health of target 
 	virtual void specialMove(Creature& target);
 	void takeDamage(int amount); 					// decrease this creature's health by amount - defense
-	Creature& chooseTarget(const Creatures& creatures, MODE m = MODE::RANDOM);
+	Creature& chooseTarget(const Creatures& creatures, MODE m = MODE::GRUMPY_WIZARD);
 
 	constexpr int specialChance() {
 		float numerator = damage - MIN_DAMAGE;
